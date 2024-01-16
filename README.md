@@ -1,29 +1,16 @@
-# action-template
+# Shemnei/reviewdog-action-typos
 
-<!-- TODO: replace reviewdog/action-template with your repo name -->
-[![Test](https://github.com/reviewdog/action-template/workflows/Test/badge.svg)](https://github.com/reviewdog/action-template/actions?query=workflow%3ATest)
-[![reviewdog](https://github.com/reviewdog/action-template/workflows/reviewdog/badge.svg)](https://github.com/reviewdog/action-template/actions?query=workflow%3Areviewdog)
-[![depup](https://github.com/reviewdog/action-template/workflows/depup/badge.svg)](https://github.com/reviewdog/action-template/actions?query=workflow%3Adepup)
-[![release](https://github.com/reviewdog/action-template/workflows/release/badge.svg)](https://github.com/reviewdog/action-template/actions?query=workflow%3Arelease)
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/reviewdog/action-template?logo=github&sort=semver)](https://github.com/reviewdog/action-template/releases)
+[![Test](https://github.com/Shemnei/reviewdog-action-typos/workflows/Test/badge.svg)](https://github.com/Shemnei/reviewdog-action-typos/actions?query=workflow%3ATest)
+[![reviewdog](https://github.com/Shemnei/reviewdog-action-typos/workflows/reviewdog/badge.svg)](https://github.com/Shemnei/reviewdog-action-typos/actions?query=workflow%3Areviewdog)
+[![depup](https://github.com/Shemnei/reviewdog-action-typos/workflows/depup/badge.svg)](https://github.com/Shemnei/reviewdog-action-typos/actions?query=workflow%3Adepup)
+[![release](https://github.com/Shemnei/reviewdog-action-typos/workflows/release/badge.svg)](https://github.com/Shemnei/reviewdog-action-typos/actions?query=workflow%3Arelease)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Shemnei/reviewdog-action-typos?logo=github&sort=semver)](https://github.com/Shemnei/reviewdog-action-typos/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
-![github-pr-review demo](https://user-images.githubusercontent.com/3797062/73162963-4b8e2b00-4132-11ea-9a3f-f9c6f624c79f.png)
-![github-pr-check demo](https://user-images.githubusercontent.com/3797062/73163032-70829e00-4132-11ea-8481-f213a37db354.png)
-
-This is a template repository for [reviewdog](https://github.com/reviewdog/reviewdog) action with release automation.
-Click `Use this template` button to create your reviewdog action :dog:!
-
-If you want to create your own reviewdog action from scratch without using this
-template, please check and copy release automation flow.
-It's important to manage release workflow and sync reviewdog version for all
-reviewdog actions.
-
-This repo contains a sample action to run [misspell](https://github.com/client9/misspell).
+This repo contains a reviewdog action to run [typos](https://github.com/crate-ci/typos).
 
 ## Input
 
-<!-- TODO: update -->
 ```yaml
 inputs:
   github_token:
@@ -52,22 +39,23 @@ inputs:
   reviewdog_flags:
     description: 'Additional reviewdog flags'
     default: ''
-  ### Flags for <linter-name> ###
-  locale:
-    description: '-locale flag of misspell. (US/UK)'
-    default: ''
+  ### Flags for typos ###
+  files:
+    description: 'Files or patterns to check'
+    required: false
+  config:
+    description: 'Use a custom config file'
+    required: false
 ```
 
 ## Usage
-<!-- TODO: update. replace `template` with the linter name -->
 
 ```yaml
 name: reviewdog
 on: [pull_request]
 jobs:
-  # TODO: change `linter_name`.
-  linter_name:
-    name: runner / <linter-name>
+  typos:
+    name: runner / typos
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -86,6 +74,7 @@ jobs:
 ### Release
 
 #### [haya14busa/action-bumpr](https://github.com/haya14busa/action-bumpr)
+
 You can bump version on merging Pull Requests with specific labels (bump:major,bump:minor,bump:patch).
 Pushing tag manually by yourself also work.
 
@@ -108,6 +97,7 @@ Supported linters:
 - [reviewdog/action-misspell](https://github.com/reviewdog/action-misspell)
 
 ### Dependencies Update Automation
+
 This repository uses [reviewdog/action-depup](https://github.com/reviewdog/action-depup) to update
 reviewdog version.
 
