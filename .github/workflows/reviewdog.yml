@@ -52,6 +52,17 @@ jobs:
           level: warning
           locale: "US"
 
+  typos:
+    name: runner / typos
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-check
+          level: warning
+
   alex:
     name: runner / alex
     runs-on: ubuntu-latest
