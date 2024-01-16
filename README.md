@@ -9,6 +9,8 @@
 
 This repo contains a reviewdog action to run [typos](https://github.com/crate-ci/typos).
 
+This is incorect.
+
 ## Input
 
 ```yaml
