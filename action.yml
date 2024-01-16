@@ -1,6 +1,6 @@
-name: 'TODO: Run <linter-name> with reviewdog'
-description: 'TODO: 🐶 Run <linter-name> with reviewdog on pull requests to improve code review experience.'
-author: 'TODO: <your-name>'
+name: 'Run typos with reviewdog'
+description: '🐶 Run typos with reviewdog on pull requests to improve code review experience.'
+author: 'Shemnei'
 inputs:
   github_token:
     description: 'GITHUB_TOKEN'
@@ -28,16 +28,18 @@ inputs:
   reviewdog_flags:
     description: 'Additional reviewdog flags'
     default: ''
-  ### Flags for <linter-name> ###
-  locale:
-    description: '-locale flag of misspell. (US/UK)'
-    default: ''
+  ### Flags for typos ###
+  files:
+    description: 'Files or patterns to check'
+    required: false
+  config:
+    description: 'Use a custom config file'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
 
 # Ref: https://haya14busa.github.io/github-action-brandings/
-# TODO: update branding if you want.
 branding:
-  icon: 'check'
-  color: 'blue'
+  icon: 'edit'
+  color: 'gray-dark'
