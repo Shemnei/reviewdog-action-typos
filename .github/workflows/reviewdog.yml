@@ -9,6 +9,9 @@ jobs:
   shellcheck:
     name: runner / shellcheck
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: haya14busa/action-cond@v1
@@ -26,6 +29,9 @@ jobs:
   hadolint:
     name: runner / hadolint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: haya14busa/action-cond@v1
@@ -40,21 +46,12 @@ jobs:
           reporter: ${{ steps.reporter.outputs.value }}
           level: warning
 
-  misspell:
-    name: runner / misspell
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: reviewdog/action-misspell@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-check
-          level: warning
-          locale: "US"
-
   typos:
     name: runner / typos
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: haya14busa/action-cond@v1
@@ -70,6 +67,18 @@ jobs:
           level: warning
           exclude: |
             testdata
+
+  misspell:
+    name: runner / misspell
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: reviewdog/action-misspell@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-check
+          level: warning
+          locale: "US"
 
   alex:
     name: runner / alex
