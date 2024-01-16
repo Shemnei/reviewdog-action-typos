@@ -40,6 +40,9 @@ inputs:
     description: 'Additional reviewdog flags'
     default: ''
   ### Flags for typos ###
+  exclude:
+    description: 'Files or patterns to exclude'
+    required: false
   files:
     description: 'Files or patterns to check'
     required: false
@@ -67,6 +70,8 @@ jobs:
           # Change reporter level if you need.
           # GitHub Status Check won't become failure with warning.
           level: warning
+	  exclude: |
+	    *.yaml
 ```
 
 ## Development
