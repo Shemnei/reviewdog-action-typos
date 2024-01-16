@@ -15,6 +15,8 @@ INPUT_FAIL_ON_ERROR="${INPUT_FAIL_ON_ERROR:?No reviewdog fail on error provided}
 ## Optional
 INPUT_REVIEWDOG_FLAGS="${INPUT_REVIEWDOG_FLAGS:-}"
 INPUT_FILES="${INPUT_FILES:-}"
+# TODO: Check if expansion is applied
+# INPUT_EXCLUDE="${INPUT_EXCLUDE:-}"
 INPUT_CONFIG="${INPUT_CONFIG:-}"
 
 # Logic
@@ -26,28 +28,39 @@ fi
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 echo '::group:: Setting up typos args ...'
-# Only specific targets
-TARGET="${INPUT_FILES:-"."}"
-# shellcheck disable=SC2312
-if [ -z "$(ls "${TARGET}" 2>/dev/null)" ]; then
-    log "ERROR: Input files (${TARGET}) not found"
-    exit 1
-fi
-
-ARGS="${TARGET}"
+ARGS=""
 
 # Use a custom configuration file
 if [ -n "${INPUT_CONFIG}" ]; then
     ARGS="${ARGS} --config ${INPUT_CONFIG}"
 fi
+
+while read -r exclude_glob; do
+    if [ -n "${exclude_glob}" ]; then
+      set -- --exclude="${exclude_glob}"
+      ARGS="${ARGS} ${*}"
+    fi
+done <<EOF
+${INPUT_EXCLUDE:-}
+EOF
+
+while read -r file; do
+    if [ -n "${file}" ]; then
+      ARGS="${ARGS} ${file}"
+    fi
+done <<EOF
+${INPUT_FILES}
+EOF
+
 echo "Running typos with: ${ARGS}"
 echo '::endgroup::'
 
 echo '::group:: Running typos ...'
+
 # shellcheck disable=SC2086
 typos ${ARGS} --format brief \
   | reviewdog -efm="%f:%l:%c: %m" \
-      -name="linter-name (typos)" \
+      -name="typos" \
       -reporter="${INPUT_REPORTER}" \
       -filter-mode="${INPUT_FILTER_MODE}" \
       -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
@@ -55,22 +68,29 @@ typos ${ARGS} --format brief \
       ${INPUT_REVIEWDOG_FLAGS}
 
 EXIT_CODE="${?}"
+
 echo '::endgroup::'
 
-echo '::group:: Running typos (suggestion) ...'
-# -reporter must be github-pr-review for the suggestion feature.
-# shellcheck disable=SC2086
-typos ${ARGS} --diff \
-  | reviewdog \
-      -name="typos (suggestion)" \
-      -f=diff \
-      -f.diff.strip=1 \
-      -reporter="github-pr-review" \
-      -filter-mode="${INPUT_FILTER_MODE}" \
-      -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
-      ${INPUT_REVIEWDOG_FLAGS}
-EXIT_CODE_SUGGESTION=$?
-echo '::endgroup::'
+if [ "${INPUT_REPORTER}" = "github-pr-review" ]; then
+  echo '::group:: Running typos (suggestion) ...'
+
+  # -reporter must be github-pr-review for the suggestion feature.
+  # shellcheck disable=SC2086
+  typos ${ARGS} --diff \
+    | reviewdog \
+	-name="typos (suggestion)" \
+	-f=diff \
+	-f.diff.strip=1 \
+	-reporter="github-pr-review" \
+	-filter-mode="${INPUT_FILTER_MODE}" \
+	-fail-on-error="${INPUT_FAIL_ON_ERROR}" \
+	${INPUT_REVIEWDOG_FLAGS}
+  EXIT_CODE_SUGGESTION="${?}"
+
+  echo '::endgroup::'
+else
+  EXIT_CODE_SUGGESTION=0
+fi
 
 if [ "${EXIT_CODE}" -ne 0 ] || [ "${EXIT_CODE_SUGGESTION}" -ne 0 ]; then
   exit $((EXIT_CODE + EXIT_CODE_SUGGESTION))

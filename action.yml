@@ -29,12 +29,16 @@ inputs:
     description: 'Additional reviewdog flags'
     default: ''
   ### Flags for typos ###
+  exclude:
+    description: 'Files or patterns to exclude'
+    required: false
   files:
     description: 'Files or patterns to check'
     required: false
   config:
     description: 'Use a custom config file'
     required: false
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
