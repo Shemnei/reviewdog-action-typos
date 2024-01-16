@@ -1,0 +1,6 @@
+runner:
+  typos:
+    cmd: typos --format brief
+    errorformat:
+      - "%f:%l:%c: %m"
+    level: warning
