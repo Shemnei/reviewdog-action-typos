@@ -12,7 +12,7 @@ on:
 jobs:
   release:
     if: github.event.action != 'labeled'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -49,7 +49,7 @@ jobs:
 
   release-check:
     if: github.event.action == 'labeled'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - name: Post bumpr status comment

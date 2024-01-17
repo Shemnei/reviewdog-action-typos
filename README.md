@@ -1,6 +1,5 @@
 # Shemnei/reviewdog-action-typos
 
-[![Test](https://github.com/Shemnei/reviewdog-action-typos/workflows/Test/badge.svg)](https://github.com/Shemnei/reviewdog-action-typos/actions?query=workflow%3ATest)
 [![reviewdog](https://github.com/Shemnei/reviewdog-action-typos/workflows/reviewdog/badge.svg)](https://github.com/Shemnei/reviewdog-action-typos/actions?query=workflow%3Areviewdog)
 [![depup](https://github.com/Shemnei/reviewdog-action-typos/workflows/depup/badge.svg)](https://github.com/Shemnei/reviewdog-action-typos/actions?query=workflow%3Adepup)
 [![release](https://github.com/Shemnei/reviewdog-action-typos/workflows/release/badge.svg)](https://github.com/Shemnei/reviewdog-action-typos/actions?query=workflow%3Arelease)
@@ -48,6 +47,20 @@ inputs:
     required: false
   config:
     description: 'Use a custom config file'
+    required: false
+  isolated:
+    description: 'Ignore implicit configuration files'
+    required: false
+    default: false
+  write_changes:
+    description: 'Write changes to the repository'
+    required: false
+    default: false
+  locale:
+    description: 'Language locale to suggest corrections for [en, en-us, en-gb, en-ca, en-au]'
+    required: false
+  debug:
+    description: 'Enables debug options. NOTE: This will significantly increase the log output. Only enable when needed'
     required: false
 ```
 
