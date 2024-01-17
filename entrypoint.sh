@@ -35,6 +35,10 @@ if [ "${RUNNER_DEBUG:-}" = "1" ]; then
   INPUT_DEBUG="true"
 fi
 
+if [ "${INPUT_DEBUG}" = "true" ]; then
+  set -x
+fi
+
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 echo '::group:: Setting up typos args ...'
