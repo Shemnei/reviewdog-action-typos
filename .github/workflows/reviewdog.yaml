@@ -80,14 +80,3 @@ jobs:
           reporter: github-check
           level: warning
           locale: "US"
-
-  alex:
-    name: runner / alex
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: reviewdog/action-alex@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-check
-          level: warning
