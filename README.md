@@ -6,63 +6,122 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Shemnei/reviewdog-action-typos?logo=github&sort=semver)](https://github.com/Shemnei/reviewdog-action-typos/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
-This repo contains a reviewdog action to run [typos](https://github.com/crate-ci/typos).
+This action runs [typos](https://github.com/crate-ci/typos) with
+[reviewdog](https://github.com/reviewdog/reviewdog) on pull requests to improve
+code review experience.
 
 ## Input
 
+For a complete list of accepted input values see [action.yaml](./action.yaml).
+
+### `files`
+
+Specify files to check.
+
+__Default__: `.`
+
+__Example__
+
 ```yaml
-inputs:
-  github_token:
-    description: 'GITHUB_TOKEN'
-    default: '${{ github.token }}'
-  workdir:
-    description: 'Working directory relative to the root directory.'
-    default: '.'
-  ### Flags for reviewdog ###
-  level:
-    description: 'Report level for reviewdog [info,warning,error]'
-    default: 'error'
-  reporter:
-    description: 'Reporter of reviewdog command [github-pr-check,github-check,github-pr-review].'
-    default: 'github-pr-check'
-  filter_mode:
-    description: |
-      Filtering mode for the reviewdog command [added,diff_context,file,nofilter].
-      Default is added.
-    default: 'added'
-  fail_on_error:
-    description: |
-      Exit code for reviewdog when errors are found [true,false]
-      Default is `false`.
-    default: 'false'
-  reviewdog_flags:
-    description: 'Additional reviewdog flags'
-    default: ''
-  ### Flags for typos ###
-  exclude:
-    description: 'Files or patterns to exclude'
-    required: false
-  files:
-    description: 'Files or patterns to check'
-    required: false
-  config:
-    description: 'Use a custom config file'
-    required: false
-  isolated:
-    description: 'Ignore implicit configuration files'
-    required: false
-    default: false
-  write_changes:
-    description: 'Write changes to the repository'
-    required: false
-    default: false
-  locale:
-    description: 'Language locale to suggest corrections for [en, en-us, en-gb, en-ca, en-au]'
-    required: false
-  debug:
-    description: 'Enables debug options. NOTE: This will significantly increase the log output. Only enable when needed'
-    required: false
+files: |
+  ./testdir
+  myfile.txt
 ```
+
+### `exclude`
+
+Specify glob patterns of files to ignore.
+
+__NOTE__: This will also ignore any files explicitly defined with `files`.
+
+__Default__: `<unset>`
+
+__Example__
+
+```yaml
+exclude: |
+  *.yaml
+  *.json
+```
+
+### `config`
+
+Explicityly set the configuration file to use. If not set, `typos` will figure out the correct config to use.
+
+__Default__: `<unset>`
+
+__Example__
+
+```yaml
+config: ./config/.typos.yaml
+```
+
+### `isolated`
+
+Tells `typos` to ignore any implicitly defined configuration files (ignore config files not set by `config`).
+
+__Default__: `false`
+
+__Example__
+
+```yaml
+isolated: true
+```
+
+### `write_changes`
+
+Tells `typos` to update __ALL__ found spell mistakes. This doesn't not commit or push anything to the branch. It only writes the changes locally to disk.
+
+__NOTE__: This will update __ALL__ mistakes, not only files/changes from the current PR or commit (e.g. this acts like `reviewdog`s `-filter-mode=nofilter`).
+
+__Default__: `false`
+
+__Example__
+
+```yaml
+write_changes: true
+```
+
+### `locale`
+
+Language locale to suggest corrections for. Possible values are `[en, en-us, en-gb, en-ca, en-au]`.
+
+__Default__: `<unset>`
+
+__Example__
+
+```yaml
+locale: en-gb
+```
+
+### `debug`
+
+Runs the action in debug mode. This enables various outputs which might be useful for debugging like:
+
+- Dump the used `typos` config
+- Dump all files to be checked
+- Enable `typos` verbose mode
+
+__NOTE__: This is also enabled when an action is run with `Enable debug logging` active (Github UI).
+
+__Default__: `<unset>`
+
+__Example__
+
+```yaml
+debug: true
+```
+
+### Deprecated inputs
+
+The original `typos` action also has the following inputs which are declared but not used at all (i might be missing something):
+
+- `extend_identifiers`
+- `extend_words`
+
+To allow easy porting (copy-paste) and have feature parity the inputs where included but will print a deprecated warning on usage.
+
+__NOTE__: The value of these inputs will be ignored and are not used.
 
 ## Usage
 
@@ -83,40 +142,6 @@ jobs:
           # Change reporter level if you need.
           # GitHub Status Check won't become failure with warning.
           level: warning
-	  exclude: |
-	    *.yaml
+          exclude: |
+            *.yaml
 ```
-
-## Development
-
-### Release
-
-#### [haya14busa/action-bumpr](https://github.com/haya14busa/action-bumpr)
-
-You can bump version on merging Pull Requests with specific labels (bump:major,bump:minor,bump:patch).
-Pushing tag manually by yourself also work.
-
-#### [haya14busa/action-update-semver](https://github.com/haya14busa/action-update-semver)
-
-This action updates major/minor release tags on a tag push. e.g. Update v1 and v1.2 tag when released v1.2.3.
-ref: https://help.github.com/en/articles/about-actions#versioning-your-action
-
-### Lint - reviewdog integration
-
-This reviewdog action template itself is integrated with reviewdog to run lints
-which is useful for Docker container based actions.
-
-![reviewdog integration](https://user-images.githubusercontent.com/3797062/72735107-7fbb9600-3bde-11ea-8087-12af76e7ee6f.png)
-
-Supported linters:
-
-- [reviewdog/action-shellcheck](https://github.com/reviewdog/action-shellcheck)
-- [reviewdog/action-hadolint](https://github.com/reviewdog/action-hadolint)
-- [reviewdog/action-misspell](https://github.com/reviewdog/action-misspell)
-
-### Dependencies Update Automation
-
-This repository uses [reviewdog/action-depup](https://github.com/reviewdog/action-depup) to update
-reviewdog version.
-
-[![reviewdog depup demo](https://user-images.githubusercontent.com/3797062/73154254-170e7500-411a-11ea-8211-912e9de7c936.png)](https://github.com/reviewdog/action-template/pull/6)
