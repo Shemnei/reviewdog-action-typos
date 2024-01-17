@@ -38,6 +38,28 @@ inputs:
   config:
     description: 'Use a custom config file'
     required: false
+  extend_identifiers:
+    deprecationMessage: 'Added for feature parity but not used in original typos action'
+    description: 'Comma separated list of extend identifiers, like someone''s name'
+    required: false
+  extend_words:
+    deprecationMessage: 'Added for feature parity but not used in original typos action'
+    description: 'Comma separated list of extend words.'
+    required: false
+  isolated:
+    description: 'Ignore implicit configuration files'
+    required: false
+    default: false
+  write_changes:
+    description: 'Write changes to the repository'
+    required: false
+    default: false
+  locale:
+    description: 'Language locale to suggest corrections for [en, en-us, en-gb, en-ca, en-au]'
+    required: false
+  debug:
+    description: 'Enables debug options. NOTE: This will significantly increase the log output. Only enable when needed'
+    required: false
 
 runs:
   using: 'docker'
