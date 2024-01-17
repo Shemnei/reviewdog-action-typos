@@ -66,6 +66,8 @@ jobs:
           reporter: ${{ steps.reporter.outputs.value }}
           level: warning
           debug: true
+          exclude: |
+            testdata
 
   misspell:
     name: runner / misspell

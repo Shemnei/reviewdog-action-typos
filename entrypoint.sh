@@ -29,6 +29,12 @@ if [ -n "${GITHUB_WORKSPACE}" ] ; then
   git config --global --add safe.directory "${GITHUB_WORKSPACE}" || exit 1
 fi
 
+# Enable debug mode if the action was run with `Enable debug logging` mode
+if [ "${RUNNER_DEBUG:-}" = "1" ]; then
+  echo 'Action run with enable debug logging: Forcing debug mode'
+  INPUT_DEBUG="true"
+fi
+
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 echo '::group:: Setting up typos args ...'
