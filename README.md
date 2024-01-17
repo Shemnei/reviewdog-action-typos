@@ -46,7 +46,7 @@ exclude: |
 
 ### `config`
 
-Explicityly set the configuration file to use. If not set, `typos` will figure out the correct config to use.
+Explicitly set the configuration file to use. If not set, `typos` will figure out the correct config to use.
 
 __Default__: `<unset>`
 
