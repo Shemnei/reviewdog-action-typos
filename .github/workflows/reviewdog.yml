@@ -63,10 +63,8 @@ jobs:
       - uses: ./
         with:
           github_token: ${{ secrets.github_token }}
-          reporter: github-check
+          reporter: ${{ steps.reporter.outputs.value }}
           level: warning
-          exclude: |
-            testdata
 
   misspell:
     name: runner / misspell
