@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eou pipefail
+set -eou
 
 # Build in
 GITHUB_WORKSPACE="${GITHUB_WORKSPACE:-}"
