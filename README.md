@@ -10,6 +10,26 @@ This action runs [typos](https://github.com/crate-ci/typos) with
 [reviewdog](https://github.com/reviewdog/reviewdog) on pull requests to improve
 code review experience.
 
+## Usage
+
+```yaml
+name: Reviewdog
+
+on: [pull_request]
+
+jobs:
+  typos:
+    name: runner / typos
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Shemnei/reviewdog-action-typos@v0
+        with:
+          reporter: github-check
+          level: error
+          fail_on_error: true
+```
+
 ## Input
 
 For a complete list of accepted input values see [action.yaml](./action.yaml).
@@ -122,26 +142,3 @@ The original `typos` action also has the following inputs which are declared but
 To allow easy porting (copy-paste) and have feature parity the inputs where included but will print a deprecated warning on usage.
 
 __NOTE__: The value of these inputs will be ignored and are not used.
-
-## Usage
-
-```yaml
-name: reviewdog
-on: [pull_request]
-jobs:
-  typos:
-    name: runner / typos
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: reviewdog/action-template@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
-          reporter: github-pr-review
-          # Change reporter level if you need.
-          # GitHub Status Check won't become failure with warning.
-          level: warning
-          exclude: |
-            *.yaml
-```
