@@ -1,0 +1,6 @@
+[files]
+ignore-hidden = false
+extend-exclude = [
+  # Ignore .git folder
+  ".git/**",
+]
