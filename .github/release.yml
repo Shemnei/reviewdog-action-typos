@@ -1,0 +1,25 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+    authors:
+      - dependabot
+      - renovate
+  categories:
+    - title: Breaking Changes
+      labels:
+        - Semver-Major
+        - Bump:Major
+        - breaking-change
+    - title: New Features
+      labels:
+        - Semver-Minor
+        - Bump:Minor
+        - enhancement
+    - title: Bug Fixes
+      labels:
+        - Bump:Patch
+        - bugfix
+    - title: Other Changes
+      labels:
+        - "*"
