@@ -6,6 +6,16 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Shemnei/reviewdog-action-typos?logo=github&sort=semver)](https://github.com/Shemnei/reviewdog-action-typos/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
+---
+
+> [!warning]
+>
+> !!!**DEPRECATED**!!!
+> 
+> By now the guys over at reviewdog released their [own action for typos](https://github.com/reviewdog/action-typos), use this instead.
+
+---
+
 This action runs [typos](https://github.com/crate-ci/typos) with
 [reviewdog](https://github.com/reviewdog/reviewdog) on pull requests to improve
 code review experience.
